@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ article.title }}</h2>
+    <img class="big-img" src="{{ asset(article.img) }}" alt="{{ article.title }}">
+    <div class="text-contain">
+         <p class="text">{{ article.text }}</p>
+    </div>
+    <div class="article-infos">
+    {% if article.note <= 1 %}
+        <p class="note-big">Note : ⭐</p>
+    {% elseif article.note == 2 %}
+        <p class="note-big">Note : ⭐⭐</p>
+    {% elseif article.note == 3 %}
+        <p class="note-big">Note : ⭐⭐⭐</p>
+    {% elseif article.note == 4 %}
+        <p class="note-big">Note : ⭐⭐⭐⭐</p>
+    {% elseif article.note >= 5 %}
+        <p class="note-big">Note : ⭐⭐⭐⭐⭐</p>
+    {% endif %}
+    {% if article.author == null or article.author == "" %}
+        <p class="author-big">Auteur anonyme</p>
+    {% else %}
+        <p class="author-big">Auteur : {{ article.author }}</p>
+    {% endif %}
+    </div>
+    <div class="buttons">
+        <p class="edit"><a href="{{ path("update", {id: article.id }) }}"><i class="far fa-edit"></i> Modifier</a></p>
+        <p class="delete"><a href="{{ path("delete", {id: article.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a></p>
+    </div>
+    <h3>Commentaires</h3>
+    {% for commentaire in article.commentaires %}
+        <div class="comm-div">
+            <p class="comm-user">{{ commentaire.user }}</p>
+            <p class="comm-message">{{ commentaire.message }}</p>
+            <div class="comm-note">
+            {% if commentaire.note <= 1 %}
+                <p class="comm-note">Avis de l'utilisateur : ⭐</p>
+            {% elseif commentaire.note == 2 %}
+                <p class="comm-note">Avis de l'utilisateur : ⭐⭐</p>
+            {% elseif commentaire.note == 3 %}
+                <p class="comm-note">Avis de l'utilisateur : ⭐⭐⭐</p>
+            {% elseif commentaire.note == 4 %}
+                <p class="comm-note">Avis de l'utilisateur : ⭐⭐⭐⭐</p>
+            {% elseif commentaire.note >= 5 %}
+                <p class="comm-note">Avis de l'utilisateur : ⭐⭐⭐⭐⭐</p>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="form-div-comm">
+    {{ form_start(form) }}
+         {{ form_row(form.user)}}
+         {{ form_row(form.message)}}
+         {{ form_row(form.note)}}
+         <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+    </div>
+{% endblock %}

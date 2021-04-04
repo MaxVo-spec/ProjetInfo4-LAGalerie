@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% for article in articles %}
+    <div class="article-small-contain">
+        <h2>{{ article.title }}</h2>
+        <img class="small-img" src="{{ asset(article.img) }}" alt="{{ article.title }}">
+        {% if article.note <= 1 %}
+            <p class="note">⭐</p>
+            {% elseif article.note == 2 %}
+            <p class="note">⭐⭐</p>
+            {% elseif article.note == 3 %}
+            <p class="note">⭐⭐⭐</p>
+            {% elseif article.note == 4 %}
+            <p class="note">⭐⭐⭐⭐</p>
+            {% elseif article.note >= 5 %}
+            <p class="note">⭐⭐⭐⭐⭐</p>
+        {% endif %}
+        <p class="commentaires">{{ article.commentaires|length }} commentaires</p>
+        {% if article.author == null or article.author == "" %}
+             <p class="author">Auteur anonyme</p>
+            {% else %}
+            <p class="author">Auteur : {{ article.author }}</p>
+        {% endif %}
+        <div class="voir-div">
+        <a class="voir" href="{{ path("readOne", {id: article.id}) }}">Voir</a>
+        </div>
+        <div class="buttons">
+            <p class="edit"><a href="{{ path("update", {id: article.id }) }}"><i class="far fa-edit"></i> Modifier</a></p>
+            <p class="delete"><a href="{{ path("delete", {id: article.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a></p>
+        </div>
+    </div>
+    {% endfor %}
+
+    <ul>
+    {% if page > 1 %}
+        <li>
+            <a href="{{ path("index", { page: page - 1 }) }}">Page précédente</a>
+        </li>
+    {% endif %}
+    {% for p in 1..pages %}
+        <li>
+            <a href="{{ path("index", { page: p }) }}">{{ p }}</a>
+        </li>
+    {% endfor %}
+        {% if page < pages %}
+            <li>
+                <a href="{{ path("index", { page: page + 1 }) }}">Page suivante</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock %}
